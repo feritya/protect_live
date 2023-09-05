@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Book</title>
+</head>
+<body>
+    <h1>Delete Book: {{ book.title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete this book?</p>
+        <input type="submit" value="Delete">
+    </form>
+    <a href="{% url 'delete_author' author_id=book.author.id %}">Cancel</a>  {# Yönlendirilecek yerin ismini uygun şekilde güncelleyin #}
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <title>Author List</title>
+    <m eta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description">
+    <meta content="Coderthemes" name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+    
+    <!-- third party css -->
+    <link href="{% static 'assets/libs/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/libs/datatables/responsive.bootstrap4.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/libs/datatables/buttons.bootstrap4.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/libs/datatables/select.bootstrap4.css' %}" rel="stylesheet" type="text/css">
+    <!-- third party css end -->
+
+    <!-- App css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css">
+    
+</head>
+</body>
+
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title">Yazar Listesi</h4>
+                            <p class="text-muted font-13 mb-4">
+                                Yazar listesini görmektesiniz. Buradan yazarları silebilirsiniz.
+                            </p>
+                            <table id="scroll-horizontal-ferit" class="table w-100 nowrap">
+                                <thead>
+                                    <tr>
+
+                                        <th>Yazar</th>
+                                        <th>Sil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for author in authors %}
+                                    <tr>
+                                        <td class="sorting_1">{{ author.name }} {{author.last_name}}</td>
+                                        {% if  author.is_protect %}
+                                        <td>
+                                            <button 
+                                            hx-post="{% url 'object_list' author.id %}"
+                                            hx-target="#author-delete-{{author.id}}" 
+                                            hx-trigger="click"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#authorlist-modal-content"
+                                            class="btn btn-danger"> Danger
+                                        </button>
+                                        </td>
+                                        {% else %}
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#author-delete-{{author.id}}">Delete</button>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+            </div>
+        </div>
+    </div>
+
+  <div  id="authorlist-modal-content" ></div>
+
+  <div id="author-delete-{{author.id}}"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Yazar Silme İşlemi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+    </div>
+
+
+    <div id="modals-here"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"></div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- end row-->           
+    <!-- Right bar overlay-->
+    
+    <!-- Vendor js -->
+    <script src="{% static 'assets/js/vendor.min.js' %}"></script>
+    
+    <!-- third party js -->
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+    <script src="{% static 'assets/libs/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/dataTables.bootstrap4.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/libs/datatables/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'assets/libs/pdfmake/pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/libs/pdfmake/vfs_fonts.js' %}"></script>
+    <!-- third party js ends -->
+
+    <script>
+        $(document).ready(function () {
+            $('.modal').on('hidden.bs.modal', function () {
+                if ($('.modal.show').length > 0) {
+                    $('body').addClass('modal-open');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#scroll-horizontal-ferit").DataTable({
+            scrollX:!0,
+            scrollCollapse:!0,
+            fixedColumns:{
+                leftColumns:1,
+                rightColumns:1
+            }
+        })
+    });  
+        
+    $(document).ready(function(){
+            $("#scroll-horizontal-ferit2").DataTable({
+            scrollX:!0,
+            scrollCollapse:!0,
+            fixedColumns:{
+                leftColumns:1,
+                rightColumns:1
+            }
+        })
+    }); 
+
+    </script>
+    <!-- Datatables init -->
+    <script src="{% static 'assets/js/pages/datatables.init.js' %}"></script>
+    
+    <!-- App js -->
+    <script src="{% static 'assets/js/app.min.js' %}"></script>
+    
+</body>
+</html>

@@ -1,0 +1,12 @@
+</head>
+<body>
+    <h1>Book List</h1>
+    <ul>
+        {% for book in books %}
+            <li><a href="{% url 'delete_book' book.id %}">{{ book.title }}</a></li>
+            
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>
